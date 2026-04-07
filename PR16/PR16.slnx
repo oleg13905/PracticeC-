@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Models/">
+    <File Path="ClientModel.cs" />
+    <File Path="OrderModel.cs" />
+  </Folder>
+  <Folder Name="/Services/">
+    <File Path="ClientService.cs" />
+  </Folder>
+  <Folder Name="/ViewModels/">
+    <File Path="CrmViewModel.cs" />
+  </Folder>
+  <Project Path="Task1/Task1.csproj" />
+</Solution>

@@ -1,0 +1,18 @@
+﻿<Window x:Class="CrmDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CRM MVVM" Height="500" Width="900">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <ListView Grid.Column="0" ItemsSource="{Binding Clients}" SelectedItem="{Binding SelectedClient}"/>
+        <StackPanel Grid.Column="1" Margin="10">
+            <TextBox Text="{Binding SelectedClient.FullName}"/>
+            <TextBox Text="{Binding SelectedClient.Phone}"/>
+            <Button Command="{Binding LoadCommand}" Content="Загрузить"/>
+        </StackPanel>
+    </Grid>
+</Window>
