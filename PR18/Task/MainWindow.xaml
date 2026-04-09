@@ -1,0 +1,35 @@
+﻿<Window x:Class="CRMApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CRM Система" Height="500" Width="700">
+    <Window.Resources>
+        <Storyboard x:Key="TabAnimation">
+            <ThicknessAnimation Storyboard.TargetProperty="Margin" 
+                               From="30,0,0,0" To="0,0,0,0" Duration="0:0:0.2"/>
+        </Storyboard>
+        <Storyboard x:Key="ExpandAnimation">
+            <DoubleAnimation Storyboard.TargetProperty="Height" 
+                           From="80" To="160" Duration="0:0:0.2"/>
+        </Storyboard>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button x:Name="BtnClients" Content="Клиенты" Width="100" Margin="5" 
+                    Click="BtnClients_Click" Background="#2C3E50" Foreground="White"/>
+            <Button x:Name="BtnDeals" Content="Сделки" Width="100" Margin="5" 
+                    Click="BtnDeals_Click" Background="#2C3E50" Foreground="White"/>
+            <Button x:Name="BtnTasks" Content="Задачи" Width="100" Margin="5" 
+                    Click="BtnTasks_Click" Background="#2C3E50" Foreground="White"/>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" Background="#ECF0F1">
+            <StackPanel x:Name="ContentPanel" Margin="10"/>
+        </ScrollViewer>
+    </Grid>
+</Window>
