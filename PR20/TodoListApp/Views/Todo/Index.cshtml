@@ -1,0 +1,71 @@
+@model TodoIndexViewModel
+@{
+    var f = Model.Filter;
+    string ActiveIf(string key) =>
+        f.Equals(key, StringComparison.OrdinalIgnoreCase) ? "active" : "";
+}
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h2 class="h5 card-title">Добавить задачу</h2>
+        <form asp-controller="Todo" asp-action="Add" method="post" class="row g-2 align-items-end">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="filter" value="@f" />
+            <div class="col-md-8">
+                <label for="title" class="form-label">Название</label>
+                <input type="text" class="form-control" id="title" name="title" maxlength="500" placeholder="Например: Купить молоко" required />
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary w-100">Добавить</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="d-flex flex-wrap gap-2 mb-3 align-items-center">
+    <span class="text-muted me-1">Фильтр:</span>
+    <a class="btn btn-sm btn-outline-secondary @ActiveIf("All")" asp-action="Index" asp-route-filter="All">Все</a>
+    <a class="btn btn-sm btn-outline-secondary @ActiveIf("Active")" asp-action="Index" asp-route-filter="Active">Активные</a>
+    <a class="btn btn-sm btn-outline-secondary @ActiveIf("Completed")" asp-action="Index" asp-route-filter="Completed">Выполненные</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-white fw-semibold">Задачи</div>
+    <ul class="list-group list-group-flush">
+        @if (Model.Items.Count == 0)
+        {
+            <li class="list-group-item text-muted">Нет задач для отображения.</li>
+        }
+        else
+        {
+            foreach (var item in Model.Items)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center gap-2">
+                    <div class="flex-grow-1">
+                        @if (item.IsCompleted)
+                        {
+                            <span class="text-decoration-line-through text-muted">@item.Title</span>
+                            <span class="badge bg-success ms-2">выполнено</span>
+                        }
+                        else
+                        {
+                            <span>@item.Title</span>
+                        }
+                        <small class="text-muted d-block">Id: @item.Id</small>
+                    </div>
+                    @if (!item.IsCompleted)
+                    {
+                        <a class="btn btn-sm btn-success shrink-0"
+                           asp-action="Complete"
+                           asp-route-id="@item.Id"
+                           asp-route-filter="@f">Отметить выполненной</a>
+                    }
+                </li>
+            }
+        }
+    </ul>
+</div>
+
+<p class="text-muted small mt-3 mb-0">
+    Прямой маршрут завершения: <code>/Todo/Complete/1</code> (подставьте нужный Id).
+</p>
