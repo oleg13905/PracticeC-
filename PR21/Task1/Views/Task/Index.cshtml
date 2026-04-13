@@ -1,0 +1,82 @@
+@model TaskIndexViewModel
+
+@if (!string.IsNullOrWhiteSpace(ViewBag.CompleteMessage as string))
+{
+    <div class="alert alert-info shadow-sm" role="alert">
+        @ViewBag.CompleteMessage
+    </div>
+}
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h2 class="h5 card-title">Добавить задачу</h2>
+
+        <form asp-controller="Task" asp-action="Add" method="post" class="row g-3 align-items-end">
+            @Html.AntiForgeryToken()
+
+            <div class="col-12">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            </div>
+
+            <div class="col-md-7">
+                <label asp-for="NewTask.Description" class="form-label">Описание</label>
+                <input asp-for="NewTask.Description" class="form-control" maxlength="500" placeholder="Например: Сделать практику" />
+                <span asp-validation-for="NewTask.Description" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-3">
+                <label asp-for="NewTask.DueDate" class="form-label">Срок</label>
+                <input asp-for="NewTask.DueDate" type="date" class="form-control" />
+                <span asp-validation-for="NewTask.DueDate" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Добавить</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-white fw-semibold">Задачи</div>
+    <ul class="list-group list-group-flush">
+        @if (Model.Items.Count == 0)
+        {
+            <li class="list-group-item text-muted">Нет задач для отображения.</li>
+        }
+        else
+        {
+            foreach (var item in Model.Items)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center gap-2">
+                    <div class="flex-grow-1">
+                        <div class="d-flex flex-wrap gap-2 align-items-center">
+                            @if (item.IsCompleted)
+                            {
+                                <span class="text-decoration-line-through text-muted">@item.Description</span>
+                                <span class="badge bg-success">выполнено</span>
+                            }
+                            else
+                            {
+                                <span>@item.Description</span>
+                                <span class="badge bg-warning text-dark">активно</span>
+                            }
+                        </div>
+
+                        <small class="text-muted d-block">
+                            Срок: @item.DueDate.ToString("yyyy-MM-dd") · Id: @item.Id
+                        </small>
+                    </div>
+
+                    @if (!item.IsCompleted)
+                    {
+                        <a class="btn btn-sm btn-success shrink-0"
+                           asp-action="Complete"
+                           asp-route-id="@item.Id">Завершить</a>
+                    }
+                </li>
+            }
+        }
+    </ul>
+</div>
+
